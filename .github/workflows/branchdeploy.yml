@@ -32,36 +32,15 @@ jobs:
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@017a9effdb900e5b5b2fddfb590a105619dca3c3 # v4.4.2
-      - name: Execute Gradle build with tests
-        run: ./gradlew build
       - name: Build Docker images with gradle
         run: ./gradlew imageBuild
-      - name: Login to Docker Registry
-        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1
-        with:
-          registry: 'ghcr.io'
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Tag And Push Docker Images
-        run: ./deploy_branch.sh ${{ github.ref_name }}
-      - name: triggering deploy
-        id: triggerbranch
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: 'https://branchdeployer.boudicca.events/deploy'
-          method: 'POST'
-          username: ${{ secrets.BRANCHDEPLOY_USER }}
-          password: ${{ secrets.BRANCHDEPLOY_PASSWORD }}
-          customHeaders: '{"Content-Type": "application/json"}'
-          data: '{"branchName": "${{ github.ref_name }}"}'
-          timeout: 60000
       - name: Update comment on success
         uses: peter-evans/create-or-update-comment@v4
         if: success()
         with:
           issue-number: ${{ github.event.issue.number }}
           comment-id: ${{ steps.init_comment.outputs.comment-id }}
-          body: "Successfully deployed here: ${{ fromJson(steps.triggerbranch.outputs.response).url }}"
+          body: "Successfully deployed here:"
       - name: Update comment on error
         uses: peter-evans/create-or-update-comment@v4
         if: (!success())
