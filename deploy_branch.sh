@@ -12,3 +12,6 @@ imageNameSearch="ghcr.io/boudicca-events/search:branchdeployer-$cleanedBranch"
 echo "pushing $imageNamePublisher"
 docker tag localhost/boudicca-search "$imageNamePublisher"
 docker push "$imageNamePublisher"
+
+echo "{imageNamePublisher}={$imageNamePublisher}" >> "$GITHUB_OUTPUT"
+echo "{imageNameSearch}={$imageNameSearch}" >> "$GITHUB_OUTPUT"
