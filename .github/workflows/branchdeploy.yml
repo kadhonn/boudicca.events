@@ -27,22 +27,15 @@ jobs:
       - name: Display all outputs as JSON
         run: |
           echo "${{ toJSON(github.event) }}"
-      - name: debug
-        run: echo ${{ github.event.issue }}
-      - name: debug
-        run: echo ${{ github.event.issue.repository_url }}
-      - name: debug
-        run: echo ${{ github.event.issue.pull_request }}
-      - name: debug
-        run: echo ${{ github.event.issue.pull_request.base }}
-      - name: debug
-        run: echo ${{ github.event.issue.pull_request.base.ref }}
-      - name: debug
-        run: echo ${{ github.event.issue.pull_request.base.repository }}
+      - name: fetch pullrequest
+        id: pr
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{ github.event.issue.pull_request.url }}
       - uses: actions/checkout@v5
         with:
-          repository: ${{ github.event.pull_request.base.repository }}
-          ref: ${{ github.event.pull_request.base.ref }}
+          repository: ${{ fromJson(steps.pr.outputs.response).head.repo.clone_url }}
+          ref: ${{ fromJson(steps.pr.outputs.response).head.ref }}
       - name: Set up JDK 21
         uses: actions/setup-java@v5
         with:
