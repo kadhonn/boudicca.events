@@ -35,7 +35,7 @@ jobs:
           method: GET
       - uses: actions/checkout@v5
         with:
-          repository: ${{ fromJson(steps.pr.outputs.response).head.repo.clone_url }}
+          repository: ${{ fromJson(steps.pr.outputs.response).head.repo.full_name }}
           ref: ${{ fromJson(steps.pr.outputs.response).head.ref }}
       - name: Set up JDK 21
         uses: actions/setup-java@v5
