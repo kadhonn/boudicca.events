@@ -30,6 +30,10 @@ jobs:
         run: echo ${{ github.event.issue.pull_request }}
       - name: debug
         run: echo ${{ github.event.issue.pull_request.base }}
+      - name: debug
+        run: echo ${{ github.event.issue.pull_request.base.ref }}
+      - name: debug
+        run: echo ${{ github.event.issue.pull_request.base.repository }}
       - uses: actions/checkout@v5
         with:
           repository: ${{ github.event.pull_request.base.repository }}
