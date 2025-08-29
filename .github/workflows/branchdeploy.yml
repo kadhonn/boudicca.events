@@ -24,8 +24,13 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: "Working on the branchdeploy... "
+      - name: Display all outputs as JSON
+        run: |
+          echo "${{ toJSON(github.event) }}"
       - name: debug
         run: echo ${{ github.event.issue }}
+      - name: debug
+        run: echo ${{ github.event.issue.repository_url }}
       - name: debug
         run: echo ${{ github.event.issue.pull_request }}
       - name: debug
