@@ -25,9 +25,11 @@ jobs:
           issue-number: ${{ github.event.issue.number }}
           body: "Working on the branchdeploy... "
       - name: debug
-        run: echo ${{ github.event.pull_request }}
+        run: echo ${{ github.event.issue }}
       - name: debug
-        run: echo ${{ github.event.pull_request.base }}
+        run: echo ${{ github.event.issue.pull_request }}
+      - name: debug
+        run: echo ${{ github.event.issue.pull_request.base }}
       - uses: actions/checkout@v5
         with:
           repository: ${{ github.event.pull_request.base.repository }}
