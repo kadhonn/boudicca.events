@@ -13,5 +13,5 @@ echo "pushing $imageNameSearch"
 docker tag localhost/boudicca-search "$imageNameSearch"
 docker push "$imageNameSearch"
 
-echo "{imageNamePublisher}={$imageNamePublisher}" >> "$GITHUB_OUTPUT"
-echo "{imageNameSearch}={$imageNameSearch}" >> "$GITHUB_OUTPUT"
+echo "imageNamePublisher=$imageNamePublisher" >> "$GITHUB_OUTPUT"
+echo "imageNameSearch=$imageNameSearch" >> "$GITHUB_OUTPUT"
