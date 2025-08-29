@@ -50,6 +50,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Tag And Push Docker Images
+        id: push_images
         run: ./deploy_branch.sh ${{ fromJson(steps.pr.outputs.response).head.ref }}
       - name: triggering deploy publisher
         id: triggerbranch_search
@@ -60,7 +61,7 @@ jobs:
           username: ${{ secrets.BRANCHDEPLOY_USER }}
           password: ${{ secrets.BRANCHDEPLOY_PASSWORD }}
           customHeaders: '{"Content-Type": "application/json"}'
-          data: '{"branchName": "${{ fromJson(steps.pr.outputs.response).head.ref }}","repoUrl": "${{ fromJson(steps.pr.outputs.response).head.repo.clone_url }}","appType": "search"}'
+          data: '{"branchName": "${{ fromJson(steps.pr.outputs.response).head.ref }}", "repoUrl": "${{ fromJson(steps.pr.outputs.response).head.repo.clone_url }}", "deploymentName": "search", "dockerImageName": "${{ steps.push_images.outputs.imageNameSearch }}"}'
           timeout: 60000
       - name: triggering deploy
         id: triggerbranch_publisher
@@ -71,7 +72,7 @@ jobs:
           username: ${{ secrets.BRANCHDEPLOY_USER }}
           password: ${{ secrets.BRANCHDEPLOY_PASSWORD }}
           customHeaders: '{"Content-Type": "application/json"}'
-          data: '{"branchName": "${{ fromJson(steps.pr.outputs.response).head.ref }}","repoUrl": "${{ fromJson(steps.pr.outputs.response).head.repo.clone_url }}","appType": "publisher-html"}'
+          data: '{"branchName": "${{ fromJson(steps.pr.outputs.response).head.ref }}", "repoUrl": "${{ fromJson(steps.pr.outputs.response).head.repo.clone_url }}", "deploymentName": "publisher-html", "dockerImageName": "${{ steps.push_images.outputs.imageNamePublisher }}"}'
           timeout: 60000
       - name: Update comment on success
         uses: peter-evans/create-or-update-comment@v4
